@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 26
-  productGUID: c92294048bc63d249aaf02f0eb8517b7
+  productGUID: c7ac73fff49dc9449a14c2dd46480e77
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
@@ -12,7 +12,7 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: GamingLord
+  companyName: DefaultCompany
   productName: UnityProject
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -46,7 +46,7 @@ PlayerSettings:
   defaultScreenHeight: 1080
   defaultScreenWidthWeb: 960
   defaultScreenHeightWeb: 600
-  m_StereoRenderingPath: 0
+  m_StereoRenderingPath: 2
   m_ActiveColorSpace: 1
   unsupportedMSAAFallback: 0
   m_SpriteBatchVertexThreshold: 300
@@ -79,7 +79,7 @@ PlayerSettings:
   androidAutoRotationBehavior: 1
   defaultIsNativeResolution: 1
   macRetinaSupport: 1
-  runInBackground: 0
+  runInBackground: 1
   captureSingleScreen: 0
   muteOtherAudioSources: 0
   Prepare IOS For Recording: 0
@@ -705,9 +705,6 @@ PlayerSettings:
   platformCapabilities:
     WindowsStoreApps:
       GazeInput: True
-      SpatialPerception: True
-      WebCam: True
-      Microphone: True
   metroTargetDeviceFamilies: {}
   metroFTAName: 
   metroFTAFileTypes: []
@@ -762,10 +759,10 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: 4f99dc1a-d40a-4758-9911-41fa8acef604
+  cloudProjectId: a4a19559-99ca-42ad-bd84-49f40b3c0082
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: UnityProject
+  projectName: UnityProject 2024-10-06_08-58-21
   organizationId: _kelen123_
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
