@@ -5,7 +5,9 @@
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "Microsoft.MixedReality.Toolkit.Tests.Utilities",
-        "Microsoft.MixedReality.Toolkit"
+        "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.SDK",
+        "Microsoft.MixedReality.Toolkit.Services.InputSystem"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
