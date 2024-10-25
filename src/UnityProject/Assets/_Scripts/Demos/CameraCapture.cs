@@ -1,6 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.UI;
+
 using System.Linq;
 
 using UnityEngine;
@@ -9,17 +8,70 @@ using UnityEngine.Windows.WebCam;
 
 public class CameraCapture : MonoBehaviour
 {
-    private void Start()
+    public Interactable button;
+
+    private PhotoCapture photoCaptureObject = null;
+    private bool photoModeStarted = false;
+    private bool canTakePhoto = false;
+    private bool isTakingPhoto = false;
+
+    private bool CanTakePhoto
     {
-        PhotoCapture.CreateAsync(false, OnPhotoCaptureCreated);
+        set
+        {
+            button.enabled = value;
+            canTakePhoto = value;
+        }
     }
 
-    void OnPhotoCaptureCreated(PhotoCapture captureObject)
+    public bool PhotoModeStarted 
+    { 
+        get => photoModeStarted;
+        set
+        {
+            photoModeStarted = value;
+            UpdateCanTakePhoto();
+        }
+    }
+
+
+    private PhotoCapture PhotoCaptureObject 
+    { 
+        get => photoCaptureObject;
+        set
+        {
+            photoCaptureObject = value;
+            UpdateCanTakePhoto();
+        }
+    }
+
+    public bool IsTakingPhoto 
+    { 
+        get => isTakingPhoto; 
+        set
+        {
+            isTakingPhoto = value;
+            UpdateCanTakePhoto();
+        }
+    }
+
+    private void UpdateCanTakePhoto()
     {
-        photoCaptureObject = captureObject;
+        CanTakePhoto = photoModeStarted && photoCaptureObject != null && !IsTakingPhoto;
+    }
 
+    private void Start()
+    {
+        PhotoCapture.CreateAsync(false, OnPhotoCaptureObjectCreated);
+        button.OnClick.AddListener(TakePhoto);
+    }
+
+    private void OnPhotoCaptureObjectCreated(PhotoCapture captureObject)
+    {
+        PhotoCaptureObject = captureObject;
+
+        // setup CameraParameters
         Resolution cameraResolution = PhotoCapture.SupportedResolutions.OrderByDescending((res) => res.width * res.height).First();
-
         CameraParameters c = new CameraParameters();
         c.hologramOpacity = 0.0f;
         c.cameraResolutionWidth = cameraResolution.width;
@@ -29,20 +81,17 @@ public class CameraCapture : MonoBehaviour
         captureObject.StartPhotoModeAsync(c, OnPhotoModeStarted);
     }
 
-    private void OnPhotoModeStarted(PhotoCapture.PhotoCaptureResult result)
+    private void TakePhoto()
     {
-        if(result.success)
-        {
-            string filename = string.Format(@"CapturedImage{0}_n.jpg", Time.time);
-            string filePath = System.IO.Path.Combine(Application.persistentDataPath, filename);
+        Assert.IsNotNull(PhotoCaptureObject);
+        Assert.IsFalse(IsTakingPhoto);
 
-            photoCaptureObject.TakePhotoAsync(filePath, PhotoCaptureFileOutputFormat.JPG, OnCapturedPhotoToDisk);
-        }
-        else
-        {
-            Debug.LogError("Unable to start photo mode!");
-            Assert.IsTrue(false, "Unable to start photo mode!");
-        }
+        IsTakingPhoto = true;
+
+        string filename = string.Format(@"CapturedImage{0}_n.jpg", Time.time);
+        string filePath = System.IO.Path.Combine(Application.persistentDataPath, filename);
+
+        PhotoCaptureObject.TakePhotoAsync(filePath, PhotoCaptureFileOutputFormat.JPG, OnCapturedPhotoToDisk);
     }
 
     void OnCapturedPhotoToDisk(PhotoCapture.PhotoCaptureResult result)
@@ -50,19 +99,33 @@ public class CameraCapture : MonoBehaviour
         if(result.success)
         {
             Debug.Log("Saved Photo to disk!");
-            photoCaptureObject.StopPhotoModeAsync(OnStoppedPhotoMode);
         }
         else
         {
-            Debug.Log("Failed to save Photo to disk");
+            Assert.IsTrue(false, "Failed to save Photo to disk");
+        }
+
+        IsTakingPhoto = false;
+    }
+
+    private void OnPhotoModeStarted(PhotoCapture.PhotoCaptureResult result)
+    {
+        if(result.success)
+        {
+            PhotoModeStarted = true;
+        }
+        else
+        {
+            PhotoModeStarted = false;
+
+            Assert.IsTrue(false, "Unable to start photo mode!");
         }
     }
 
     void OnStoppedPhotoMode(PhotoCapture.PhotoCaptureResult result)
     {
-        photoCaptureObject.Dispose();
-        photoCaptureObject = null;
+        //PhotoCaptureObject.Dispose();
+        //PhotoCaptureObject = null;
+        PhotoModeStarted = false;
     }
-
-    private PhotoCapture photoCaptureObject = null;
 }
