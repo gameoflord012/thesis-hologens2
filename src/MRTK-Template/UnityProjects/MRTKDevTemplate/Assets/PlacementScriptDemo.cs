@@ -1,4 +1,5 @@
 using MixedReality.Toolkit;
+using MixedReality.Toolkit.Input;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,11 +18,14 @@ public class PlacementScriptDemo : MonoBehaviour
 
     private void Start()
     {
-        m_interactable.selectEntered.AddListener(OnSelectedEnter)
+        m_interactable.selectEntered.AddListener(OnSelectedEnter);
     }
 
     private void OnSelectedEnter(SelectEnterEventArgs args)
     {
-        if(args.interactableObject is IRayInteractor
+        var interactor = args.interactorObject;
+        Debug.Log(
+                "Transform: " + interactor.GetAttachTransform(args.interactableObject),
+                interactor.GetAttachTransform(args.interactableObject).gameObject);
     }
 }
