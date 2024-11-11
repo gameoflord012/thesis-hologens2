@@ -9,6 +9,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class PlacementScriptDemo : MonoBehaviour
 {
+    [SerializeField] private GameObject m_prefab;
     private MRTKBaseInteractable m_interactable;
 
     private void Awake()
@@ -24,8 +25,13 @@ public class PlacementScriptDemo : MonoBehaviour
     private void OnSelectedEnter(SelectEnterEventArgs args)
     {
         var interactor = args.interactorObject;
-        Debug.Log(
-                "Transform: " + interactor.GetAttachTransform(args.interactableObject),
-                interactor.GetAttachTransform(args.interactableObject).gameObject);
+
+        if(!(interactor is IRayInteractor || interactor is IGrabInteractor))
+        {
+            return;
+        }
+
+        Vector3 spawnPosition = interactor.GetAttachTransform(args.interactableObject).position;
+        GameObject.Instantiate(m_prefab, spawnPosition, Quaternion.identity, transform);
     }
 }
