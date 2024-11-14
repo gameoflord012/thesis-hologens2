@@ -6,14 +6,14 @@ using UnityEngine.Assertions;
 
 public class SceneInstances : MonoBehaviour
 {
-    [SerializeField] private Transform m_buttonSlotsRoot;
+    [SerializeField] private Transform m_menu;
 
-    public Transform ButtonSlotsRoot
+    public Transform Menu
     {
         get
         {
-            Assert.IsNotNull(m_buttonSlotsRoot);
-            return m_buttonSlotsRoot;
+            Assert.IsNotNull(m_menu);
+            return m_menu;
         }
     }
 }
