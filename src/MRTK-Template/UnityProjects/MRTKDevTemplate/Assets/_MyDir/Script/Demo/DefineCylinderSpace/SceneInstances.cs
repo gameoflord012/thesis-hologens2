@@ -6,9 +6,9 @@ using UnityEngine.Assertions;
 
 public class SceneInstances : MonoBehaviour
 {
-    [SerializeField] private Transform m_menu;
+    [SerializeField] private MenuController m_menu;
 
-    public Transform Menu
+    public MenuController Menu
     {
         get
         {
