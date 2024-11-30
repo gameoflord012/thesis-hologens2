@@ -7,6 +7,7 @@ public class StateManager : MonoBehaviour
     private State_BaseClass[] m_states;
 
     private State_BaseClass m_currentState;
+    private State_BaseClass m_nextState;
 
     private void Awake()
     {
@@ -26,29 +27,39 @@ public class StateManager : MonoBehaviour
         m_currentState.OnStateEnter_Internal();
     }
 
-    internal void ChangeToState(Type typeOfTheChangingState)
+    private void Update()
+    {
+        if(m_nextState != null)
+        {
+            MoveToNextStateImmediately();
+        }
+    }
+
+    public void SetNextState(Type typeOfTheChangingState)
     {
         Assert.IsTrue(m_currentState.GetType() != typeOfTheChangingState, "Can't transition to the same state");
+        Assert.IsNull(m_nextState, "Warning! Next state is set twice, before current state is updating to next state");
 
         State_BaseClass nextState = null;
         foreach (var state_i in m_states)
         {
-            if(nextState.GetType() == typeOfTheChangingState)
+            if (nextState.GetType() == typeOfTheChangingState)
             {
                 nextState = state_i;
             }
         }
 
         Assert.IsNotNull(nextState, $"Can't find the next state having '{typeOfTheChangingState}' type");
+    }
 
-        //
-        // Begin State Transition
-        //
-
+    private void MoveToNextStateImmediately()
+    {
+        if (m_nextState == null) return;
+        
         m_currentState.OnStateExit_Internal();
-        nextState.OnStateEnter_Internal();
+        m_nextState.OnStateEnter_Internal();
 
-        m_currentState = nextState;
-        nextState = null;
+        m_currentState = m_nextState;
+        m_nextState = null;
     }
 }

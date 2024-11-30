@@ -25,7 +25,7 @@ public class State_BaseClass : MonoBehaviour
 
     protected void ChangeToState(Type theChangingState)
     {
-        StateManager.ChangeToState(theChangingState);
+        StateManager.SetNextState(theChangingState);
     }
 
     #region INTERNAL METHODS
