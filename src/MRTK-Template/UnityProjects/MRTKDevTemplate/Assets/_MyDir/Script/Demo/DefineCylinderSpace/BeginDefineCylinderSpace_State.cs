@@ -1,6 +1,5 @@
 using MixedReality.Toolkit.UX;
-using System.Collections;
-using System.Collections.Generic;
+using MixedReality.Toolkit;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -25,7 +24,11 @@ public class BeginDefineCylinderSpace_State : State_BaseClass
     private void Start()
     {
         // initialize button group
-        m_menu.AddButton(m_playButtonPrefab, BUTTON_GROUP_NAME);
+        var nextStateBtn = m_menu.InitializeButton(m_playButtonPrefab, BUTTON_GROUP_NAME);
+        nextStateBtn.OnClicked.AddListener(() =>
+        {
+            SetNextState(typeof(DefiningCylinderRoot_State));
+        });
     }
 
     protected override void OnStateEnter()

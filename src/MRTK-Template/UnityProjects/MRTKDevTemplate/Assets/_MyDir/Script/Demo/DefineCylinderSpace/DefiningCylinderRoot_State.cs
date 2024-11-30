@@ -24,7 +24,7 @@ public class DefiningCylinderRoot_State : State_BaseClass
     private void Start()
     {
         // initialize button group
-        m_menu.AddButton(m_returnButton_prefab, BUTTON_GROUP_NAME);
+        m_menu.InitializeButton(m_returnButton_prefab, BUTTON_GROUP_NAME);
     }
 
     protected override void OnStateEnter()

@@ -14,7 +14,7 @@ public class StateManager : MonoBehaviour
         m_states = GetComponentsInChildren<State_BaseClass>();
 
         Assert.IsTrue(m_states.Length > 0);
-        m_currentState = m_states[0];
+        m_nextState = m_states[0];
     }
 
     private void Start()
@@ -23,8 +23,6 @@ public class StateManager : MonoBehaviour
         {
             state.OnAssigningToAStateManager(this);
         }
-
-        m_currentState.OnStateEnter_Internal();
     }
 
     private void Update()
@@ -40,23 +38,23 @@ public class StateManager : MonoBehaviour
         Assert.IsTrue(m_currentState.GetType() != typeOfTheChangingState, "Can't transition to the same state");
         Assert.IsNull(m_nextState, "Warning! Next state is set twice, before current state is updating to next state");
 
-        State_BaseClass nextState = null;
         foreach (var state_i in m_states)
         {
-            if (nextState.GetType() == typeOfTheChangingState)
+            if (state_i.GetType() == typeOfTheChangingState)
             {
-                nextState = state_i;
+                m_nextState = state_i;
+                break;
             }
         }
 
-        Assert.IsNotNull(nextState, $"Can't find the next state having '{typeOfTheChangingState}' type");
+        Assert.IsNotNull(m_nextState, $"Can't find the next state having '{typeOfTheChangingState}' type");
     }
 
     private void MoveToNextStateImmediately()
     {
         if (m_nextState == null) return;
         
-        m_currentState.OnStateExit_Internal();
+        m_currentState?.OnStateExit_Internal();
         m_nextState.OnStateEnter_Internal();
 
         m_currentState = m_nextState;

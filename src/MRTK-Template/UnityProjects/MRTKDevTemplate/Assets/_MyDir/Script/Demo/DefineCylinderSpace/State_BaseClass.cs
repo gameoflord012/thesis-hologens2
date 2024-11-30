@@ -23,7 +23,7 @@ public class State_BaseClass : MonoBehaviour
 
     protected virtual void OnStateExit() { }
 
-    protected void ChangeToState(Type theChangingState)
+    protected void SetNextState(Type theChangingState)
     {
         StateManager.SetNextState(theChangingState);
     }
