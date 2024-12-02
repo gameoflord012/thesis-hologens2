@@ -23,6 +23,8 @@ public class State_BaseClass : MonoBehaviour
 
     protected virtual void OnStateExit() { }
 
+    protected virtual void OnStateUpdate() { }
+
     protected void SetNextState(Type theChangingState)
     {
         StateManager.SetNextState(theChangingState);
@@ -34,14 +36,19 @@ public class State_BaseClass : MonoBehaviour
         StateManager = stateManager;
     }
 
-    internal virtual void OnStateEnter_Internal()
+    internal void OnStateEnter_Internal()
     {
         OnStateEnter();
     }
 
-    internal virtual void OnStateExit_Internal()
+    internal void OnStateExit_Internal()
     {
         OnStateExit();
+    }
+
+    internal void OnStateUpdate_Internal()
+    {
+        OnStateUpdate();
     }
     #endregion
 }

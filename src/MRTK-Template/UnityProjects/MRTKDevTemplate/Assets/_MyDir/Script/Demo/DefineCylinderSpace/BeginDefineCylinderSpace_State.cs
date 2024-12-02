@@ -1,5 +1,4 @@
 using MixedReality.Toolkit.UX;
-using MixedReality.Toolkit;
 using UnityEngine;
 using UnityEngine.Assertions;
 

@@ -9,6 +9,8 @@ public class StateManager : MonoBehaviour
     private State_BaseClass m_currentState;
     private State_BaseClass m_nextState;
 
+    private StateData_BaseClass m_stateData;
+
     private void Awake()
     {
         m_states = GetComponentsInChildren<State_BaseClass>();
@@ -31,6 +33,8 @@ public class StateManager : MonoBehaviour
         {
             MoveToNextStateImmediately();
         }
+
+        m_currentState?.OnStateUpdate_Internal();
     }
 
     public void SetNextState(Type typeOfTheChangingState)
