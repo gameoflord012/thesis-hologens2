@@ -19,6 +19,17 @@ public class State_BaseClass : MonoBehaviour
         set => m_stateManager = value;
     }
 
+    protected T GetStateData<T>() where T : new()
+    {
+        if(StateManager.StateData == null)
+        {
+            StateManager.StateData = new T();
+        }
+
+        Assert.IsTrue(StateManager.StateData.GetType() == typeof(T), "inconsistent type between state data");
+        return (T)StateManager.StateData;
+    }
+
     protected virtual void OnStateEnter() { }
 
     protected virtual void OnStateExit() { }

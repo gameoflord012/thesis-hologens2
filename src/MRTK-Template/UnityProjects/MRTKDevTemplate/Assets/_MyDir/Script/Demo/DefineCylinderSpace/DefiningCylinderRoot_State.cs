@@ -36,8 +36,7 @@ public class DefiningCylinderRoot_State : State_BaseClass
         m_handTracking = XRSubsystemHelpers.GetFirstRunningSubsystem<HandsAggregatorSubsystem>();
 
         // initialize button group
-        var btn = m_menu.InitializeButton(m_returnButton_prefab, BUTTON_GROUP_NAME);
-        btn.OnClicked.AddListener(() =>
+        m_menu.InitializeButton(m_returnButton_prefab, BUTTON_GROUP_NAME).OnClicked.AddListener(() =>
         {
             SetNextState(typeof(BeginDefineCylinderSpace_State));
         });
@@ -57,6 +56,9 @@ public class DefiningCylinderRoot_State : State_BaseClass
     protected override void OnStateExit()
     {
         m_menu.ToggleButtonGroup(BUTTON_GROUP_NAME, false);
+
+        // remove visual position line
+        m_lineRenderer.positionCount = 0;
     }
 
     protected override void OnStateUpdate()
@@ -77,7 +79,8 @@ public class DefiningCylinderRoot_State : State_BaseClass
                 // If the hand is Pinching, select the that root
                 if(m_handTracking.TryGetPinchProgress(m_handedness, out _, out bool isPinching, out _) && isPinching)
                 {
-                    SetNextState(typeof(BeginDefineCylinderSpace_State));
+                    GetStateData<DefineCylinder_StateData>().CylinderOrigin = hitInfo.point;
+                    SetNextState(typeof(DefiningCylinderFinal_State));
                 }
             }
         }

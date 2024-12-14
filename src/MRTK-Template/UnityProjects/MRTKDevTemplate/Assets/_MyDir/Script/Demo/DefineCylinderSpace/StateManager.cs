@@ -9,22 +9,34 @@ public class StateManager : MonoBehaviour
     private State_BaseClass m_currentState;
     private State_BaseClass m_nextState;
 
-    private StateData_BaseClass m_stateData;
+    private object m_stateData;
+
+    public object StateData
+    {
+        get
+        {
+            return m_stateData;
+        }
+        set
+        {
+            Assert.IsNotNull(value, "Can't null");
+            Assert.IsNull(m_stateData, "State data is initialized");
+
+            m_stateData = value;
+        }
+    }
 
     private void Awake()
     {
         m_states = GetComponentsInChildren<State_BaseClass>();
 
-        Assert.IsTrue(m_states.Length > 0);
-        m_nextState = m_states[0];
-    }
-
-    private void Start()
-    {
         foreach (var state in m_states)
         {
             state.OnAssigningToAStateManager(this);
         }
+
+        Assert.IsTrue(m_states.Length > 0);
+        m_nextState = m_states[0];
     }
 
     private void Update()
